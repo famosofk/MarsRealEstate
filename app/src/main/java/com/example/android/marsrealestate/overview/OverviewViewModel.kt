@@ -22,6 +22,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.marsrealestate.network.MarsAPI
+import com.example.android.marsrealestate.network.MarsProperty
 import retrofit2.Response
 import javax.security.auth.callback.Callback
 
@@ -49,13 +50,13 @@ class OverviewViewModel : ViewModel() {
      */
     private fun getMarsRealEstateProperties() {
 
-        MarsAPI.retrofitService.getProperties().enqueue(object: retrofit2.Callback<String> {
-            override fun onFailure(call: retrofit2.Call<String>, t: Throwable) {
+        MarsAPI.retrofitService.getProperties().enqueue(object: retrofit2.Callback< List<MarsProperty>> {
+            override fun onFailure(call: retrofit2.Call<List<MarsProperty>>, t: Throwable) {
                 _response.value = "Failure: " + t.message
             }
 
-            override fun onResponse(call: retrofit2.Call<String>, response: Response<String>) {
-                _response.value = response.body()
+            override fun onResponse(call: retrofit2.Call<List<MarsProperty>>, response: Response<List<MarsProperty>>) {
+                _response.value = "Success: ${response.body()?.size} mars properties are available"
             }
 
 
